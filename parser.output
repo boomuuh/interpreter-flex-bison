@@ -1,0 +1,441 @@
+Grammar
+
+    0 $accept: input $end
+
+    1 input: input TOKEN_READSTRING
+    2      | input TOKEN_READINT
+    3      | input TOKEN_PRINT
+    4      | input TOKEN_ISNIL
+    5      | input TOKEN_HD
+    6      | input TOKEN_TL
+    7      | input TOKEN_CONS
+    8      | input TOKEN_NIL
+    9      | input TOKEN_DOT
+   10      | input TOKEN_WITH
+   11      | input TOKEN_LET
+   12      | input TOKEN_PLUS
+   13      | input TOKEN_MINUS
+   14      | input TOKEN_IDENTIFIER
+   15      | input TOKEN_TIMES
+   16      | input TOKEN_DIVIDE
+   17      | input TOKEN_INT
+   18      | input TOKEN_LPAREN
+   19      | input TOKEN_RPAREN
+   20      | input TOKEN_AND
+   21      | input TOKEN_OR
+   22      | input TOKEN_EQ
+   23      | input TOKEN_NEQ
+   24      | input TOKEN_GT
+   25      | input TOKEN_GEQ
+   26      | input TOKEN_LT
+   27      | input TOKEN_LEQ
+   28      | input TOKEN_IF
+   29      | input TOKEN_THEN
+   30      | input TOKEN_ELSE
+   31      | input TOKEN_LAMBDA
+   32      | input TOKEN_FUN
+   33      | input TOKEN_COMMA
+   34      | input TOKEN_STRING
+   35      | input TOKEN_IN
+   36      | input TOKEN_ERROR
+   37      | /* empty */
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+TOKEN_READSTRING (258) 1
+TOKEN_READINT (259) 2
+TOKEN_PRINT (260) 3
+TOKEN_ISNIL (261) 4
+TOKEN_HD (262) 5
+TOKEN_TL (263) 6
+TOKEN_CONS (264) 7
+TOKEN_NIL (265) 8
+TOKEN_DOT (266) 9
+TOKEN_WITH (267) 10
+TOKEN_LET (268) 11
+TOKEN_PLUS (269) 12
+TOKEN_MINUS (270) 13
+TOKEN_IDENTIFIER (271) 14
+TOKEN_TIMES (272) 15
+TOKEN_DIVIDE (273) 16
+TOKEN_INT (274) 17
+TOKEN_LPAREN (275) 18
+TOKEN_RPAREN (276) 19
+TOKEN_AND (277) 20
+TOKEN_OR (278) 21
+TOKEN_EQ (279) 22
+TOKEN_NEQ (280) 23
+TOKEN_GT (281) 24
+TOKEN_GEQ (282) 25
+TOKEN_LT (283) 26
+TOKEN_LEQ (284) 27
+TOKEN_IF (285) 28
+TOKEN_THEN (286) 29
+TOKEN_ELSE (287) 30
+TOKEN_LAMBDA (288) 31
+TOKEN_FUN (289) 32
+TOKEN_COMMA (290) 33
+TOKEN_STRING (291) 34
+TOKEN_ERROR (292) 36
+TOKEN_IN (293) 35
+
+
+Nonterminals, with rules where they appear
+
+$accept (39)
+    on left: 0
+input (40)
+    on left: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21
+    22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37, on right: 0 1
+    2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+    26 27 28 29 30 31 32 33 34 35 36
+
+
+state 0
+
+    0 $accept: . input $end
+
+    $default  reduce using rule 37 (input)
+
+    input  go to state 1
+
+
+state 1
+
+    0 $accept: input . $end
+    1 input: input . TOKEN_READSTRING
+    2      | input . TOKEN_READINT
+    3      | input . TOKEN_PRINT
+    4      | input . TOKEN_ISNIL
+    5      | input . TOKEN_HD
+    6      | input . TOKEN_TL
+    7      | input . TOKEN_CONS
+    8      | input . TOKEN_NIL
+    9      | input . TOKEN_DOT
+   10      | input . TOKEN_WITH
+   11      | input . TOKEN_LET
+   12      | input . TOKEN_PLUS
+   13      | input . TOKEN_MINUS
+   14      | input . TOKEN_IDENTIFIER
+   15      | input . TOKEN_TIMES
+   16      | input . TOKEN_DIVIDE
+   17      | input . TOKEN_INT
+   18      | input . TOKEN_LPAREN
+   19      | input . TOKEN_RPAREN
+   20      | input . TOKEN_AND
+   21      | input . TOKEN_OR
+   22      | input . TOKEN_EQ
+   23      | input . TOKEN_NEQ
+   24      | input . TOKEN_GT
+   25      | input . TOKEN_GEQ
+   26      | input . TOKEN_LT
+   27      | input . TOKEN_LEQ
+   28      | input . TOKEN_IF
+   29      | input . TOKEN_THEN
+   30      | input . TOKEN_ELSE
+   31      | input . TOKEN_LAMBDA
+   32      | input . TOKEN_FUN
+   33      | input . TOKEN_COMMA
+   34      | input . TOKEN_STRING
+   35      | input . TOKEN_IN
+   36      | input . TOKEN_ERROR
+
+    $end              shift, and go to state 2
+    TOKEN_READSTRING  shift, and go to state 3
+    TOKEN_READINT     shift, and go to state 4
+    TOKEN_PRINT       shift, and go to state 5
+    TOKEN_ISNIL       shift, and go to state 6
+    TOKEN_HD          shift, and go to state 7
+    TOKEN_TL          shift, and go to state 8
+    TOKEN_CONS        shift, and go to state 9
+    TOKEN_NIL         shift, and go to state 10
+    TOKEN_DOT         shift, and go to state 11
+    TOKEN_WITH        shift, and go to state 12
+    TOKEN_LET         shift, and go to state 13
+    TOKEN_PLUS        shift, and go to state 14
+    TOKEN_MINUS       shift, and go to state 15
+    TOKEN_IDENTIFIER  shift, and go to state 16
+    TOKEN_TIMES       shift, and go to state 17
+    TOKEN_DIVIDE      shift, and go to state 18
+    TOKEN_INT         shift, and go to state 19
+    TOKEN_LPAREN      shift, and go to state 20
+    TOKEN_RPAREN      shift, and go to state 21
+    TOKEN_AND         shift, and go to state 22
+    TOKEN_OR          shift, and go to state 23
+    TOKEN_EQ          shift, and go to state 24
+    TOKEN_NEQ         shift, and go to state 25
+    TOKEN_GT          shift, and go to state 26
+    TOKEN_GEQ         shift, and go to state 27
+    TOKEN_LT          shift, and go to state 28
+    TOKEN_LEQ         shift, and go to state 29
+    TOKEN_IF          shift, and go to state 30
+    TOKEN_THEN        shift, and go to state 31
+    TOKEN_ELSE        shift, and go to state 32
+    TOKEN_LAMBDA      shift, and go to state 33
+    TOKEN_FUN         shift, and go to state 34
+    TOKEN_COMMA       shift, and go to state 35
+    TOKEN_STRING      shift, and go to state 36
+    TOKEN_ERROR       shift, and go to state 37
+    TOKEN_IN          shift, and go to state 38
+
+
+state 2
+
+    0 $accept: input $end .
+
+    $default  accept
+
+
+state 3
+
+    1 input: input TOKEN_READSTRING .
+
+    $default  reduce using rule 1 (input)
+
+
+state 4
+
+    2 input: input TOKEN_READINT .
+
+    $default  reduce using rule 2 (input)
+
+
+state 5
+
+    3 input: input TOKEN_PRINT .
+
+    $default  reduce using rule 3 (input)
+
+
+state 6
+
+    4 input: input TOKEN_ISNIL .
+
+    $default  reduce using rule 4 (input)
+
+
+state 7
+
+    5 input: input TOKEN_HD .
+
+    $default  reduce using rule 5 (input)
+
+
+state 8
+
+    6 input: input TOKEN_TL .
+
+    $default  reduce using rule 6 (input)
+
+
+state 9
+
+    7 input: input TOKEN_CONS .
+
+    $default  reduce using rule 7 (input)
+
+
+state 10
+
+    8 input: input TOKEN_NIL .
+
+    $default  reduce using rule 8 (input)
+
+
+state 11
+
+    9 input: input TOKEN_DOT .
+
+    $default  reduce using rule 9 (input)
+
+
+state 12
+
+   10 input: input TOKEN_WITH .
+
+    $default  reduce using rule 10 (input)
+
+
+state 13
+
+   11 input: input TOKEN_LET .
+
+    $default  reduce using rule 11 (input)
+
+
+state 14
+
+   12 input: input TOKEN_PLUS .
+
+    $default  reduce using rule 12 (input)
+
+
+state 15
+
+   13 input: input TOKEN_MINUS .
+
+    $default  reduce using rule 13 (input)
+
+
+state 16
+
+   14 input: input TOKEN_IDENTIFIER .
+
+    $default  reduce using rule 14 (input)
+
+
+state 17
+
+   15 input: input TOKEN_TIMES .
+
+    $default  reduce using rule 15 (input)
+
+
+state 18
+
+   16 input: input TOKEN_DIVIDE .
+
+    $default  reduce using rule 16 (input)
+
+
+state 19
+
+   17 input: input TOKEN_INT .
+
+    $default  reduce using rule 17 (input)
+
+
+state 20
+
+   18 input: input TOKEN_LPAREN .
+
+    $default  reduce using rule 18 (input)
+
+
+state 21
+
+   19 input: input TOKEN_RPAREN .
+
+    $default  reduce using rule 19 (input)
+
+
+state 22
+
+   20 input: input TOKEN_AND .
+
+    $default  reduce using rule 20 (input)
+
+
+state 23
+
+   21 input: input TOKEN_OR .
+
+    $default  reduce using rule 21 (input)
+
+
+state 24
+
+   22 input: input TOKEN_EQ .
+
+    $default  reduce using rule 22 (input)
+
+
+state 25
+
+   23 input: input TOKEN_NEQ .
+
+    $default  reduce using rule 23 (input)
+
+
+state 26
+
+   24 input: input TOKEN_GT .
+
+    $default  reduce using rule 24 (input)
+
+
+state 27
+
+   25 input: input TOKEN_GEQ .
+
+    $default  reduce using rule 25 (input)
+
+
+state 28
+
+   26 input: input TOKEN_LT .
+
+    $default  reduce using rule 26 (input)
+
+
+state 29
+
+   27 input: input TOKEN_LEQ .
+
+    $default  reduce using rule 27 (input)
+
+
+state 30
+
+   28 input: input TOKEN_IF .
+
+    $default  reduce using rule 28 (input)
+
+
+state 31
+
+   29 input: input TOKEN_THEN .
+
+    $default  reduce using rule 29 (input)
+
+
+state 32
+
+   30 input: input TOKEN_ELSE .
+
+    $default  reduce using rule 30 (input)
+
+
+state 33
+
+   31 input: input TOKEN_LAMBDA .
+
+    $default  reduce using rule 31 (input)
+
+
+state 34
+
+   32 input: input TOKEN_FUN .
+
+    $default  reduce using rule 32 (input)
+
+
+state 35
+
+   33 input: input TOKEN_COMMA .
+
+    $default  reduce using rule 33 (input)
+
+
+state 36
+
+   34 input: input TOKEN_STRING .
+
+    $default  reduce using rule 34 (input)
+
+
+state 37
+
+   36 input: input TOKEN_ERROR .
+
+    $default  reduce using rule 36 (input)
+
+
+state 38
+
+   35 input: input TOKEN_IN .
+
+    $default  reduce using rule 35 (input)
