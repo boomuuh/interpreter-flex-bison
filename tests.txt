@@ -1,0 +1,165 @@
+print "hello." in
+PrInT "1"   in
+PRINT "12" in
+pRINT "123" in
+print "222" in
+print 0 in
+print 123 in
+print Nil in
+print "variable" in
+let printletinvariable = 2 in
+---
+let names = 1@2@22@34 in
+fun p with n = if isNil n & n >= 4 then Nil else let _ = print !n in (if n < 2 | n = 22 then (p 3) else (p #n)) in
+let m = (p names) in
+---
+let lam2 = lambda x,y. (x * y) in
+let num = (lam2 2 4) in
+let - = print num in
+(* comment section commenting*)
+(****** MORE COMEENTTGS **)
+---
+ let Y = lambda g.((lambda x.(g(x x))) (lambda x.(g(x x)))) in
+fun printer with grades = if isNil #grades then 0 else
+                                        let con = (if isNil (#(#grades)) then grades else !grades) in
+                                        let _ = print (!con) in let _ = print (#con)
+                                        in  (printer #grades)
+---
+fun accumalate with integers =(  let F =  lambda z.lambda n.(if isNil n then 0 else !n + (z(#n))) in (Y F integers)) in
+fun heavy with l1,l2 = if isNil l1 then Nil else let v = ((!l1) * (!l2)) in (v@(heavy (#l1) (#l2) )) in
+fun read_nums with limit,prompt =
+                                        if limit = 0 then Nil else
+                                        let _ = print prompt in
+                                        let val = readInt in
+                                        let test = (if ((val < 0) | (val > 100)) then
+                                            let _ = print "Input out of range" in (read_nums 1 prompt)  else val) in
+                                        test@(read_nums (limit - 1) prompt)
+---
+fun student with assignments, w =
+                    let _ = print "Please enter the name of the student:" in
+                    let name = readString in
+                    let grades = (read_nums assignments "Please enter a grade of the student:") in
+                    let s = (accumalate (heavy grades w)) in
+                    (name@(if s < 100 then 0 else (s / 100)))
+---
+fun insert with l1,l2 = if isNil l2 then l1 else
+                                     let con = (if isNil (#(#l2)) then l2 else !l2) in
+                                     (if (#l1) >= (#con) then (l1@l2) else let e = (if isNil (#(#l2)) then Nil else #l2) in (con@(insert l1 e)))
+---
+fun start with v, w, avgs=
+                                let grades = (student v w) in
+                                let all = (insert grades avgs) in
+                                let _ = print "Do you want to add another student?" in
+                                let pred = readString in
+                                let fin = ( if (pred = "y") | (pred = "Y") then (start v w all) else all ) in
+                                (printer fin)
+---
+fun weight with v = let w = (read_nums v "Please enter a weight:") in
+                              (if ((accumalate w) <> 100) then let _ = print "Weights do not add up to 100" in 0 else (start v w Nil))
+in
+let _ = print "Hello! Please enter the number of assignments." in
+let v = readInt in (* this should not be anything forrizzle***hello *)
+fun x with v =(if isNil v then print "line 1 i v == null" else  print "line 1 v == null") in
+let i = (x 2) in
+fun greater with g = if g = 2 then (g + 2) else (g - 2) in
+---
+let _ = print i in
+let i2 = (x 0) in
+fun x2 with v1 = if v1 <> 3 then print "6 x2 <> 3" else print "6 x2 == 3" in
+let _ = print i2 in
+let i3 = (x2 3) in
+let _ = print i3 in
+let la = lambda x.(x + 2) in
+let m = (la 45)
+---
+(* TESTER "string" COMMENT *)
+fun read with t =(let _ = print "enter string" in let x = readString in if isNil x then Nil else print x) in
+fun readi with t2 = (let _ = print "enter num" in let x = readInt in if x > 5 then 100 else  -2) in
+let tester = (read 9) in
+let tester2 = (readi 2) in
+let _ = print tester in let _ = print tester2 in 0
+(if v <= 0 then let _ = print "Input out of range" in 0 else  (weight v))
+---
+print "string line 1
+
+
+        line 2
+
+
+        line3
+    " in
+    (******* error this*  (* tester "3 + 4 nested (com(* hello *)ment) ***)*)
+
+
+                (* line *) in
+    print "erro 2" in
+    (*  line 1
+
+
+
+        line 2
+
+
+        line 3*)
+    print "end  "
+let 12_mufasa = print "mufasa variable"
+---
+"hello" += 2
+really = 3 >= 4
+
+if 4 * 2 = 0 then print "equal operator" else ((((((((((((((((((((* ))))) *(((((((((()))))))))) *) print "= not working"
+if 2*3+1 < 0
+if 4+2 <= 100
+lambda x.lambda y.(35 + 8 <> 23)
+(let _ = lambda y.lambda n.(y y)) in (_ 100)
+3 > 0
+print "string line 1
+
+
+        line 2
+
+
+        line3
+    " in
+    (******* error this*  (* tes****ter "3 + 4 nest*) ed******** (com(* hello *)ment) ***)
+
+
+                * line * ) in
+    print "erro 2" in
+    (*  line 1
+
+
+
+        line 2
+
+
+        line 3*)
+    print "end  "
+---
+let 12_mufasa = print "mufasa variable"
+let m = READINT_2
+
+(****** ( yo  * ((((()))))))))(* new line \n*))))))*((((((( * )                   "dog cat mouse"                                                                  *)
+"\t Tab 1 2 3 in y"
+let 123indentity with 123= "Y COMBINATOR"
+(*(*(*(* ********* ((((((((()))))))hello "
+
+
+
+    " no *)
+
+* ) * ) * ) ******** ) ((((((((  * *  ))))))))
+
+*) *) *)
+
+
+(* mini*comment *)
+
+
+
+
+
+(**********))
+---
+let fun with hello = if 123345 <> 5 then (if fun = 2 & !isNil fun then print hello else (fun 2))
+let m = if isNil then open comment *)
