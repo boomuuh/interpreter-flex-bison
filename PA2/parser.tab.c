@@ -531,7 +531,7 @@ static const yytype_int8 yydefgoto[] =
 #define YYPACT_NINF -14
 static const yytype_int8 yypact[] =
 {
-      14,    14,   -14,   -14,    14,   -14,   -14,     3,   -13,   -14,
+      14,    14,   -14,   -14,    14,   -14,   -14,     3,   -13,   -13,
       -5,     1,   -14,    14,    14,    14,    14,   -14,   -13,   -14,
      -13,   -10,   -10,   -14,   -14
 };
@@ -1517,7 +1517,7 @@ yyreduce:
 /* Line 1806 of yacc.c  */
 #line 128 "parser.y"
     {
-                          std::cout << "#1 " << ((yyvsp[(1) - (2)]))->to_value() << " " <<((yyvsp[(2) - (2)]))->to_value() << std::endl;
+                         
                         	AstExpressionList *l = AstExpressionList::make((yyvsp[(1) - (2)]));
                         	l = l->append_exp((yyvsp[(2) - (2)]));
                         	(yyval) = l; }
@@ -1528,7 +1528,7 @@ yyreduce:
 /* Line 1806 of yacc.c  */
 #line 134 "parser.y"
     {
-                          std::cout << "expression_application expression: " << ((yyvsp[(1) - (2)]))->to_value() <<" "<< ((yyvsp[(2) - (2)]))->to_value() << std::endl;
+                         
                         	Expression* _l = (yyvsp[(1) - (2)]);
                         	assert(_l->get_type() == AST_EXPRESSION_LIST);
                         	AstExpressionList* l = static_cast<AstExpressionList*>(_l);

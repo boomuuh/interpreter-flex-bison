@@ -25,7 +25,6 @@ Terminals unused in grammar
    TOKEN_FUN
    TOKEN_COMMA
    TOKEN_IN
-   EXPR
 
 
 Grammar
@@ -209,6 +208,11 @@ state 9
     7           | expression . TOKEN_TIMES expression
     8           | expression . TOKEN_DIVIDE expression
    11           | TOKEN_PRINT expression .
+
+    TOKEN_PLUS    shift, and go to state 13
+    TOKEN_MINUS   shift, and go to state 14
+    TOKEN_TIMES   shift, and go to state 15
+    TOKEN_DIVIDE  shift, and go to state 16
 
     $default  reduce using rule 11 (expression)
 

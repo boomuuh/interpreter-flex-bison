@@ -62,7 +62,7 @@ TOKEN_IN
 
 %left  TOKEN_PLUS  TOKEN_MINUS
 %left  TOKEN_TIMES TOKEN_DIVIDE
-%right TOKEN_PRINT
+
 
 
 %%
@@ -111,7 +111,7 @@ expression:
             	           
           | TOKEN_LPAREN expression TOKEN_RPAREN {
                           $$ = $2; }                 
-          | TOKEN_PRINT expression {  
+          | TOKEN_PRINT expression %prec EXPR{  
                           $$ = AstUnOp::make(PRINT,$2); }           
           | TOKEN_ERROR {
                          // do not change the error rule
@@ -126,13 +126,13 @@ expression:
 
 expression_application: 
             expression expression {
-                          std::cout << "#1 " << ($1)->to_value() << " " <<($2)->to_value() << std::endl;
+                         
                         	AstExpressionList *l = AstExpressionList::make($1);
                         	l = l->append_exp($2);
                         	$$ = l; }
 
             | expression_application expression {
-                          std::cout << "expression_application expression: " << ($1)->to_value() <<" "<< ($2)->to_value() << std::endl;
+                         
                         	Expression* _l = $1;
                         	assert(_l->get_type() == AST_EXPRESSION_LIST);
                         	AstExpressionList* l = static_cast<AstExpressionList*>(_l);
