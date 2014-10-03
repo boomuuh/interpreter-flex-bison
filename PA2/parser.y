@@ -60,7 +60,8 @@ TOKEN_IN
 %nonassoc EXPR
 
 
-%left  TOKEN_PLUS 
+%left  TOKEN_PLUS  TOKEN_MINUS
+%left  TOKEN_TIMES TOKEN_DIVIDE
 %right TOKEN_PRINT
 
 
@@ -93,9 +94,18 @@ expression:
           | TOKEN_IDENTIFIER {
                       	  string lexeme = GET_LEXEME($1);
                         	$$ =  AstIdentifier::make(lexeme); }
-                      
+            
           | expression TOKEN_PLUS expression {
             	            $$ = AstBinOp::make(PLUS, $1, $3); }
+
+          | expression TOKEN_MINUS expression {
+                          $$ = AstBinOp::make(MINUS, $1, $3); }  
+          
+          | expression TOKEN_TIMES expression {
+                          $$ = AstBinOp::make(TIMES, $1, $3); }
+
+          | expression TOKEN_DIVIDE expression {
+                          $$ = AstBinOp::make(DIVIDE, $1, $3); }                 
                      
           | TOKEN_LPAREN expression_application TOKEN_RPAREN 
             	           
