@@ -59,7 +59,7 @@ TOKEN_IN
 
 %nonassoc EXPR
 
-
+%left  TOKEN_EQ
 %left  TOKEN_PLUS  TOKEN_MINUS
 %left  TOKEN_TIMES TOKEN_DIVIDE
 
@@ -105,12 +105,16 @@ expression:
                           $$ = AstBinOp::make(TIMES, $1, $3); }
 
           | expression TOKEN_DIVIDE expression {
-                          $$ = AstBinOp::make(DIVIDE, $1, $3); }                 
+                          $$ = AstBinOp::make(DIVIDE, $1, $3); }    
+
+          | expression TOKEN_EQ expression {
+                          $$ = AstBinOp::make(EQ, $1, $3); }                                          
                      
           | TOKEN_LPAREN expression_application TOKEN_RPAREN 
             	           
           | TOKEN_LPAREN expression TOKEN_RPAREN {
-                          $$ = $2; }                 
+                          $$ = $2; }
+
           | TOKEN_PRINT expression %prec EXPR{  
                           $$ = AstUnOp::make(PRINT,$2); }           
           | TOKEN_ERROR {
@@ -132,11 +136,17 @@ expression_application:
                         	$$ = l; }
 
             | expression_application expression {
-                         
                         	Expression* _l = $1;
                         	assert(_l->get_type() == AST_EXPRESSION_LIST);
                         	AstExpressionList* l = static_cast<AstExpressionList*>(_l);
                         	$$ = l->append_exp($2); }
+
+            | TOKEN_LET expression expression {
+                        Expression* e = $2;
+                        assert (e->get_type() == AST_IDENTIFIER);
+                        $$ = AstLet::make(static_cast<AstIdentifier*>(e),$2,$3);
+
+            }
 
             
 
