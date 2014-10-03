@@ -58,8 +58,8 @@ TOKEN_IN
 
 
 %nonassoc EXPR
-%left TOKEN_PLUS
 
+%left  TOKEN_PLUS TOKEN_PRINT
 
 
 %%
@@ -89,7 +89,6 @@ expression:
                           $$ = e; }
                       
           | TOKEN_IDENTIFIER {
-                          std::cout << "ID: " << ($1)->to_value() <<std::endl;
                       	  string lexeme = GET_LEXEME($1);
                         	$$ =  AstIdentifier::make(lexeme); }
                       
@@ -123,6 +122,15 @@ expression_application:
                         	assert(_l->get_type() == AST_EXPRESSION_LIST);
                         	AstExpressionList* l = static_cast<AstExpressionList*>(_l);
                         	$$ = l->append_exp($2); }
+
+            | TOKEN_PRINT expression {  
+                          $$ = AstUnOp::make(PRINT,$2); }
+
+
+
+
+
+
 
 
 
