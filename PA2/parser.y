@@ -59,7 +59,9 @@ TOKEN_IN
 
 %nonassoc EXPR
 
-%left  TOKEN_PLUS TOKEN_PRINT
+
+%left  TOKEN_PLUS 
+%right TOKEN_PRINT
 
 
 %%
@@ -78,7 +80,7 @@ program: expression
 
 
 expression: 
-            TOKEN_INT {
+           TOKEN_INT {
                         	string lexeme = GET_LEXEME($1);
                         	long int val = string_to_int(lexeme);
                         	Expression* e = AstInt::make(val);
@@ -95,9 +97,12 @@ expression:
           | expression TOKEN_PLUS expression {
             	            $$ = AstBinOp::make(PLUS, $1, $3); }
                      
-          | TOKEN_LPAREN expression_application TOKEN_RPAREN {
-            	            $$ = $2; }
-                     
+          | TOKEN_LPAREN expression_application TOKEN_RPAREN 
+            	           
+          | TOKEN_LPAREN expression TOKEN_RPAREN {
+                          $$ = $2; }                 
+          | TOKEN_PRINT expression {  
+                          $$ = AstUnOp::make(PRINT,$2); }           
           | TOKEN_ERROR {
                          // do not change the error rule
                          string lexeme = GET_LEXEME($1);
@@ -123,9 +128,10 @@ expression_application:
                         	AstExpressionList* l = static_cast<AstExpressionList*>(_l);
                         	$$ = l->append_exp($2); }
 
-            | TOKEN_PRINT expression {  
-                          $$ = AstUnOp::make(PRINT,$2); }
+            
 
+
+         
 
 
 

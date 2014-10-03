@@ -42,11 +42,12 @@ Grammar
     4           | TOKEN_IDENTIFIER
     5           | expression TOKEN_PLUS expression
     6           | TOKEN_LPAREN expression_application TOKEN_RPAREN
-    7           | TOKEN_ERROR
+    7           | TOKEN_LPAREN expression TOKEN_RPAREN
+    8           | TOKEN_PRINT expression
+    9           | TOKEN_ERROR
 
-    8 expression_application: expression expression
-    9                       | expression_application expression
-   10                       | TOKEN_PRINT expression
+   10 expression_application: expression expression
+   11                       | expression_application expression
 
 
 Terminals, with rules where they appear
@@ -55,7 +56,7 @@ $end (0) 0
 error (256)
 TOKEN_READSTRING (258)
 TOKEN_READINT (259)
-TOKEN_PRINT (260) 10
+TOKEN_PRINT (260) 8
 TOKEN_ISNIL (261)
 TOKEN_HD (262)
 TOKEN_TL (263)
@@ -70,8 +71,8 @@ TOKEN_IDENTIFIER (271) 4
 TOKEN_TIMES (272)
 TOKEN_DIVIDE (273)
 TOKEN_INT (274) 2
-TOKEN_LPAREN (275) 6
-TOKEN_RPAREN (276) 6
+TOKEN_LPAREN (275) 6 7
+TOKEN_RPAREN (276) 6 7
 TOKEN_AND (277)
 TOKEN_OR (278)
 TOKEN_EQ (279)
@@ -87,7 +88,7 @@ TOKEN_LAMBDA (288)
 TOKEN_FUN (289)
 TOKEN_COMMA (290)
 TOKEN_STRING (291) 3
-TOKEN_ERROR (292) 7
+TOKEN_ERROR (292) 9
 TOKEN_IN (293)
 EXPR (294)
 
@@ -99,186 +100,199 @@ $accept (40)
 program (41)
     on left: 1, on right: 0
 expression (42)
-    on left: 2 3 4 5 6 7, on right: 1 5 8 9 10
+    on left: 2 3 4 5 6 7 8 9, on right: 1 5 7 8 10 11
 expression_application (43)
-    on left: 8 9 10, on right: 6 9
+    on left: 10 11, on right: 6 11
 
 
 state 0
 
     0 $accept: . program $end
 
-    TOKEN_IDENTIFIER  shift, and go to state 1
-    TOKEN_INT         shift, and go to state 2
-    TOKEN_LPAREN      shift, and go to state 3
-    TOKEN_STRING      shift, and go to state 4
-    TOKEN_ERROR       shift, and go to state 5
+    TOKEN_PRINT       shift, and go to state 1
+    TOKEN_IDENTIFIER  shift, and go to state 2
+    TOKEN_INT         shift, and go to state 3
+    TOKEN_LPAREN      shift, and go to state 4
+    TOKEN_STRING      shift, and go to state 5
+    TOKEN_ERROR       shift, and go to state 6
 
-    program     go to state 6
-    expression  go to state 7
+    program     go to state 7
+    expression  go to state 8
 
 
 state 1
+
+    8 expression: TOKEN_PRINT . expression
+
+    TOKEN_PRINT       shift, and go to state 1
+    TOKEN_IDENTIFIER  shift, and go to state 2
+    TOKEN_INT         shift, and go to state 3
+    TOKEN_LPAREN      shift, and go to state 4
+    TOKEN_STRING      shift, and go to state 5
+    TOKEN_ERROR       shift, and go to state 6
+
+    expression  go to state 9
+
+
+state 2
 
     4 expression: TOKEN_IDENTIFIER .
 
     $default  reduce using rule 4 (expression)
 
 
-state 2
+state 3
 
     2 expression: TOKEN_INT .
 
     $default  reduce using rule 2 (expression)
 
 
-state 3
+state 4
 
     6 expression: TOKEN_LPAREN . expression_application TOKEN_RPAREN
+    7           | TOKEN_LPAREN . expression TOKEN_RPAREN
 
-    TOKEN_PRINT       shift, and go to state 8
-    TOKEN_IDENTIFIER  shift, and go to state 1
-    TOKEN_INT         shift, and go to state 2
-    TOKEN_LPAREN      shift, and go to state 3
-    TOKEN_STRING      shift, and go to state 4
-    TOKEN_ERROR       shift, and go to state 5
+    TOKEN_PRINT       shift, and go to state 1
+    TOKEN_IDENTIFIER  shift, and go to state 2
+    TOKEN_INT         shift, and go to state 3
+    TOKEN_LPAREN      shift, and go to state 4
+    TOKEN_STRING      shift, and go to state 5
+    TOKEN_ERROR       shift, and go to state 6
 
-    expression              go to state 9
-    expression_application  go to state 10
+    expression              go to state 10
+    expression_application  go to state 11
 
 
-state 4
+state 5
 
     3 expression: TOKEN_STRING .
 
     $default  reduce using rule 3 (expression)
 
 
-state 5
-
-    7 expression: TOKEN_ERROR .
-
-    $default  reduce using rule 7 (expression)
-
-
 state 6
 
-    0 $accept: program . $end
+    9 expression: TOKEN_ERROR .
 
-    $end  shift, and go to state 11
+    $default  reduce using rule 9 (expression)
 
 
 state 7
 
-    1 program: expression .
-    5 expression: expression . TOKEN_PLUS expression
+    0 $accept: program . $end
 
-    TOKEN_PLUS  shift, and go to state 12
-
-    $default  reduce using rule 1 (program)
+    $end  shift, and go to state 12
 
 
 state 8
 
-   10 expression_application: TOKEN_PRINT . expression
+    1 program: expression .
+    5 expression: expression . TOKEN_PLUS expression
 
-    TOKEN_IDENTIFIER  shift, and go to state 1
-    TOKEN_INT         shift, and go to state 2
-    TOKEN_LPAREN      shift, and go to state 3
-    TOKEN_STRING      shift, and go to state 4
-    TOKEN_ERROR       shift, and go to state 5
+    TOKEN_PLUS  shift, and go to state 13
 
-    expression  go to state 13
+    $default  reduce using rule 1 (program)
 
 
 state 9
 
     5 expression: expression . TOKEN_PLUS expression
-    8 expression_application: expression . expression
+    8           | TOKEN_PRINT expression .
 
-    TOKEN_PLUS        shift, and go to state 12
-    TOKEN_IDENTIFIER  shift, and go to state 1
-    TOKEN_INT         shift, and go to state 2
-    TOKEN_LPAREN      shift, and go to state 3
-    TOKEN_STRING      shift, and go to state 4
-    TOKEN_ERROR       shift, and go to state 5
-
-    expression  go to state 14
+    $default  reduce using rule 8 (expression)
 
 
 state 10
 
-    6 expression: TOKEN_LPAREN expression_application . TOKEN_RPAREN
-    9 expression_application: expression_application . expression
+    5 expression: expression . TOKEN_PLUS expression
+    7           | TOKEN_LPAREN expression . TOKEN_RPAREN
+   10 expression_application: expression . expression
 
-    TOKEN_IDENTIFIER  shift, and go to state 1
-    TOKEN_INT         shift, and go to state 2
-    TOKEN_LPAREN      shift, and go to state 3
-    TOKEN_RPAREN      shift, and go to state 15
-    TOKEN_STRING      shift, and go to state 4
-    TOKEN_ERROR       shift, and go to state 5
+    TOKEN_PRINT       shift, and go to state 1
+    TOKEN_PLUS        shift, and go to state 13
+    TOKEN_IDENTIFIER  shift, and go to state 2
+    TOKEN_INT         shift, and go to state 3
+    TOKEN_LPAREN      shift, and go to state 4
+    TOKEN_RPAREN      shift, and go to state 14
+    TOKEN_STRING      shift, and go to state 5
+    TOKEN_ERROR       shift, and go to state 6
 
-    expression  go to state 16
+    expression  go to state 15
 
 
 state 11
+
+    6 expression: TOKEN_LPAREN expression_application . TOKEN_RPAREN
+   11 expression_application: expression_application . expression
+
+    TOKEN_PRINT       shift, and go to state 1
+    TOKEN_IDENTIFIER  shift, and go to state 2
+    TOKEN_INT         shift, and go to state 3
+    TOKEN_LPAREN      shift, and go to state 4
+    TOKEN_RPAREN      shift, and go to state 16
+    TOKEN_STRING      shift, and go to state 5
+    TOKEN_ERROR       shift, and go to state 6
+
+    expression  go to state 17
+
+
+state 12
 
     0 $accept: program $end .
 
     $default  accept
 
 
-state 12
+state 13
 
     5 expression: expression TOKEN_PLUS . expression
 
-    TOKEN_IDENTIFIER  shift, and go to state 1
-    TOKEN_INT         shift, and go to state 2
-    TOKEN_LPAREN      shift, and go to state 3
-    TOKEN_STRING      shift, and go to state 4
-    TOKEN_ERROR       shift, and go to state 5
+    TOKEN_PRINT       shift, and go to state 1
+    TOKEN_IDENTIFIER  shift, and go to state 2
+    TOKEN_INT         shift, and go to state 3
+    TOKEN_LPAREN      shift, and go to state 4
+    TOKEN_STRING      shift, and go to state 5
+    TOKEN_ERROR       shift, and go to state 6
 
-    expression  go to state 17
-
-
-state 13
-
-    5 expression: expression . TOKEN_PLUS expression
-   10 expression_application: TOKEN_PRINT expression .
-
-    TOKEN_PLUS  shift, and go to state 12
-
-    $default  reduce using rule 10 (expression_application)
+    expression  go to state 18
 
 
 state 14
 
-    5 expression: expression . TOKEN_PLUS expression
-    8 expression_application: expression expression .
+    7 expression: TOKEN_LPAREN expression TOKEN_RPAREN .
 
-    TOKEN_PLUS  shift, and go to state 12
-
-    $default  reduce using rule 8 (expression_application)
+    $default  reduce using rule 7 (expression)
 
 
 state 15
+
+    5 expression: expression . TOKEN_PLUS expression
+   10 expression_application: expression expression .
+
+    TOKEN_PLUS  shift, and go to state 13
+
+    $default  reduce using rule 10 (expression_application)
+
+
+state 16
 
     6 expression: TOKEN_LPAREN expression_application TOKEN_RPAREN .
 
     $default  reduce using rule 6 (expression)
 
 
-state 16
+state 17
 
     5 expression: expression . TOKEN_PLUS expression
-    9 expression_application: expression_application expression .
+   11 expression_application: expression_application expression .
 
-    TOKEN_PLUS  shift, and go to state 12
+    TOKEN_PLUS  shift, and go to state 13
 
-    $default  reduce using rule 9 (expression_application)
+    $default  reduce using rule 11 (expression_application)
 
 
-state 17
+state 18
 
     5 expression: expression . TOKEN_PLUS expression
     5           | expression TOKEN_PLUS expression .
