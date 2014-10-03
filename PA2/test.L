@@ -1,0 +1,3 @@
+(*33 1 "duck" identifier*)
+
+let y = lambda x,y.(x(y y)) in (y 5)
