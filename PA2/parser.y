@@ -108,12 +108,17 @@ expression:
                           $$ = AstBinOp::make(DIVIDE, $1, $3); }    
 
           | expression TOKEN_EQ expression {
+             std::cout << "Token eq " << ($1)->to_value() << " " << ($3)->to_value() << std::endl;
                           $$ = AstBinOp::make(EQ, $1, $3); }                                          
                      
           | TOKEN_LPAREN expression_application TOKEN_RPAREN 
             	           
           | TOKEN_LPAREN expression TOKEN_RPAREN {
                           $$ = $2; }
+          
+          | TOKEN_IF expression TOKEN_THEN expression TOKEN_ELSE expression %prec EXPR {
+                          $$ = AstBranch::make($2,$4,$6);
+          }
 
           | TOKEN_PRINT expression %prec EXPR{  
                           $$ = AstUnOp::make(PRINT,$2); }           
@@ -141,12 +146,7 @@ expression_application:
                         	AstExpressionList* l = static_cast<AstExpressionList*>(_l);
                         	$$ = l->append_exp($2); }
 
-            | TOKEN_LET expression expression {
-                        Expression* e = $2;
-                        assert (e->get_type() == AST_IDENTIFIER);
-                        $$ = AstLet::make(static_cast<AstIdentifier*>(e),$2,$3);
-
-            }
+           
 
             
 
