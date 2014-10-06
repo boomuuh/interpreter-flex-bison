@@ -59,7 +59,7 @@ TOKEN_IN
 
 %nonassoc EXPR
 
-%left  TOKEN_EQ
+%left  TOKEN_LT TOKEN_GT TOKEN_EQ TOKEN_NEQ TOKEN_LEQ TOKEN_GEQ
 %left  TOKEN_PLUS  TOKEN_MINUS
 %left  TOKEN_TIMES TOKEN_DIVIDE
 
@@ -94,6 +94,7 @@ expression:
           | TOKEN_IDENTIFIER {
                       	  string lexeme = GET_LEXEME($1);
                         	$$ =  AstIdentifier::make(lexeme); }
+          | conditional 
             
           | expression TOKEN_PLUS expression {
             	            $$ = AstBinOp::make(PLUS, $1, $3); }
@@ -107,9 +108,10 @@ expression:
           | expression TOKEN_DIVIDE expression {
                           $$ = AstBinOp::make(DIVIDE, $1, $3); }    
 
-          | expression TOKEN_EQ expression {
-             std::cout << "Token eq " << ($1)->to_value() << " " << ($3)->to_value() << std::endl;
-                          $$ = AstBinOp::make(EQ, $1, $3); }                                          
+          | TOKEN_LET expression TOKEN_EQ expression TOKEN_IN expression %prec EXPR {
+                          Expression* e = $2;
+                          assert (e->get_type() == AST_IDENTIFIER);
+                          $$ = AstLet::make(static_cast<AstIdentifier*>(e),$4,$6);}
                      
           | TOKEN_LPAREN expression_application TOKEN_RPAREN 
             	           
@@ -117,10 +119,9 @@ expression:
                           $$ = $2; }
           
           | TOKEN_IF expression TOKEN_THEN expression TOKEN_ELSE expression %prec EXPR {
-                          $$ = AstBranch::make($2,$4,$6);
-          }
+                          $$ = AstBranch::make($2,$4,$6); }
 
-          | TOKEN_PRINT expression %prec EXPR{  
+          | TOKEN_PRINT expression %prec EXPR {  
                           $$ = AstUnOp::make(PRINT,$2); }           
           | TOKEN_ERROR {
                          // do not change the error rule
@@ -129,7 +130,16 @@ expression:
                          if(lexeme != "") error += lexeme;
                          yyerror(error.c_str());
                          YYERROR; }
+          
                         
+
+conditional:   
+          expression TOKEN_GT expression  {$$ = AstBinOp::make(GT,$1,$3);   }  |
+          expression TOKEN_LT expression  {$$ = AstBinOp::make(LT,$1,$3);   }  |
+          expression TOKEN_GEQ expression {$$ = AstBinOp::make(GEQ,$1,$3);  }  |
+          expression TOKEN_LEQ expression {$$ = AstBinOp::make(LEQ,$1,$3);  }  |
+          expression TOKEN_EQ expression  {$$ = AstBinOp::make(EQ,$1,$3);   }            
+
 
 
 

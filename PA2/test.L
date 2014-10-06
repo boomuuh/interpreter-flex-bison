@@ -11,4 +11,6 @@
 
 (*((3 + 5 - 1) / 2 = 2 - 1 * 200) = 23 *)
 
-(print (if 1 = 1 then "1 != 0" else "weird"))
+(*(print (if (3*5 >= 16 - 1) then (if 2 + 2 >= ((1 * 100)) then "nested if-then" else "nested else")  else "weird"))*)
+
+let x = print "hello" in x
