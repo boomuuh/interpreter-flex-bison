@@ -138,14 +138,14 @@ conditional:
           expression TOKEN_LT expression  {$$ = AstBinOp::make(LT,$1,$3);   }  |
           expression TOKEN_GEQ expression {$$ = AstBinOp::make(GEQ,$1,$3);  }  |
           expression TOKEN_LEQ expression {$$ = AstBinOp::make(LEQ,$1,$3);  }  |
-          expression TOKEN_EQ expression  {$$ = AstBinOp::make(EQ,$1,$3);   }            
+          expression TOKEN_EQ expression  {$$ = AstBinOp::make(EQ,$1,$3);   }  |
+          expression TOKEN_NEQ expression  {$$ = AstBinOp::make(NEQ,$1,$3);   }         
 
 
 
 
 expression_application: 
             expression expression {
-                         
                         	AstExpressionList *l = AstExpressionList::make($1);
                         	l = l->append_exp($2);
                         	$$ = l; }
