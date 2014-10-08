@@ -107,7 +107,12 @@ expression:
 
           | TOKEN_READSTRING { $$ = AstRead::make(false); }   
           
-          | conditional 
+          | expression TOKEN_GT expression   {$$ = AstBinOp::make(GT,$1,$3);   }  
+          | expression TOKEN_LT expression   {$$ = AstBinOp::make(LT,$1,$3);   }  
+          | expression TOKEN_GEQ expression  {$$ = AstBinOp::make(GEQ,$1,$3);  }  
+          | expression TOKEN_LEQ expression  {$$ = AstBinOp::make(LEQ,$1,$3);  }  
+          | expression TOKEN_EQ expression   {$$ = AstBinOp::make(EQ,$1,$3);   }  
+          | expression TOKEN_NEQ expression  {$$ = AstBinOp::make(NEQ,$1,$3);  }         
             
           | expression TOKEN_PLUS expression {
             	            $$ = AstBinOp::make(PLUS, $1, $3); }
@@ -122,7 +127,6 @@ expression:
                           $$ = AstBinOp::make(DIVIDE, $1, $3); } 
 
         
-
           | TOKEN_LET expression TOKEN_EQ expression TOKEN_IN expression %prec EXPR {
                           Expression* e = $2;
                           assert (e->get_type() == AST_IDENTIFIER);
@@ -179,13 +183,7 @@ id_list:
 
 
 
-conditional:   
-          expression TOKEN_GT expression   {$$ = AstBinOp::make(GT,$1,$3);   }  |
-          expression TOKEN_LT expression   {$$ = AstBinOp::make(LT,$1,$3);   }  |
-          expression TOKEN_GEQ expression  {$$ = AstBinOp::make(GEQ,$1,$3);  }  |
-          expression TOKEN_LEQ expression  {$$ = AstBinOp::make(LEQ,$1,$3);  }  |
-          expression TOKEN_EQ expression   {$$ = AstBinOp::make(EQ,$1,$3);   }  |
-          expression TOKEN_NEQ expression  {$$ = AstBinOp::make(NEQ,$1,$3);  }         
+
 
 
 
