@@ -19,4 +19,5 @@
 
 (*let y = lambda x.lambda z.(let t = ReadString in let _ = (print t) in 0) in (y 5)*)
 
-isNil x 
+(*isNil x *)
+(1+2)@3

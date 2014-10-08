@@ -71,7 +71,7 @@ TOKEN_IN
 %left  TOKEN_LT TOKEN_GT TOKEN_EQ TOKEN_NEQ TOKEN_LEQ TOKEN_GEQ
 %left  TOKEN_PLUS  TOKEN_MINUS
 %left  TOKEN_TIMES TOKEN_DIVIDE
-
+%right  TOKEN_CONS
 
 
 %%
@@ -104,6 +104,8 @@ expression:
                       	  string lexeme = GET_LEXEME($1);
                         	$$ =  AstIdentifier::make(lexeme); }
 
+          | TOKEN_NIL { $$ = AstNil::make();}
+
           | TOKEN_READINT  { $$ = AstRead::make(true); }   
           | TOKEN_READSTRING { $$ = AstRead::make(false); }   
           
@@ -128,7 +130,8 @@ expression:
           | expression TOKEN_DIVIDE expression {
                           $$ = AstBinOp::make(DIVIDE, $1, $3); } 
 
-        
+          | expression TOKEN_CONS expression {$$ = AstBinOp::make(CONS,$1,$3); }
+
           | TOKEN_LET expression TOKEN_EQ expression TOKEN_IN expression %prec EXPR {
                           Expression* e = $2;
                           assert (e->get_type() == AST_IDENTIFIER);
@@ -155,6 +158,7 @@ expression:
                          if(lexeme != "") error += lexeme;
                          yyerror(error.c_str());
                          YYERROR; }
+
 
 
 
