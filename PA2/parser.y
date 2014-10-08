@@ -103,8 +103,8 @@ expression:
           | TOKEN_IDENTIFIER {
                       	  string lexeme = GET_LEXEME($1);
                         	$$ =  AstIdentifier::make(lexeme); }
-          | TOKEN_READINT  { $$ = AstRead::make(true); }   
 
+          | TOKEN_READINT  { $$ = AstRead::make(true); }   
           | TOKEN_READSTRING { $$ = AstRead::make(false); }   
           
           | expression TOKEN_GT expression   {$$ = AstBinOp::make(GT,$1,$3);   }  
@@ -112,7 +112,9 @@ expression:
           | expression TOKEN_GEQ expression  {$$ = AstBinOp::make(GEQ,$1,$3);  }  
           | expression TOKEN_LEQ expression  {$$ = AstBinOp::make(LEQ,$1,$3);  }  
           | expression TOKEN_EQ expression   {$$ = AstBinOp::make(EQ,$1,$3);   }  
-          | expression TOKEN_NEQ expression  {$$ = AstBinOp::make(NEQ,$1,$3);  }         
+          | expression TOKEN_NEQ expression  {$$ = AstBinOp::make(NEQ,$1,$3);  }  
+
+          | TOKEN_ISNIL expression %prec EXPR { $$ = AstUnOp::make(ISNIL,$2); }       
             
           | expression TOKEN_PLUS expression {
             	            $$ = AstBinOp::make(PLUS, $1, $3); }
@@ -154,6 +156,8 @@ expression:
                          yyerror(error.c_str());
                          YYERROR; }
 
+
+
 id_list: 
            expression {
                   debug({$1});
@@ -174,19 +178,6 @@ id_list:
                   $$ = id_list;
          }
    
-
-
-          
-       
-      
-
-
-
-
-
-
-
-
 
 expression_application: 
             expression expression {
