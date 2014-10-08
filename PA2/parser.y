@@ -72,7 +72,7 @@ TOKEN_IN
 %left  TOKEN_PLUS  TOKEN_MINUS
 %left  TOKEN_TIMES TOKEN_DIVIDE
 %right  TOKEN_CONS
-
+%right TOKEN_HD TOKEN_TL
 
 %%
 
@@ -131,6 +131,10 @@ expression:
                           $$ = AstBinOp::make(DIVIDE, $1, $3); } 
 
           | expression TOKEN_CONS expression {$$ = AstBinOp::make(CONS,$1,$3); }
+
+          | TOKEN_HD expression  {$$ = AstUnOp::make(HD,$2); }
+
+          | TOKEN_TL expression {$$ = AstUnOp::make(TL,$2); }
 
           | TOKEN_LET expression TOKEN_EQ expression TOKEN_IN expression %prec EXPR {
                           Expression* e = $2;
