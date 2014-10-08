@@ -22,4 +22,10 @@
 (*isNil x *)
 (*let x = lambda l.(if isNil !l then print !l else print #l) in (x 1@2@3) *)
 
-let x = lambda li.(print !li@1@Nil@2 * 4) in (x 2@2@4)
+(*let x = lambda li.(print !li@1@Nil@2 * 4) in (x 2@2@4)*)
+
+(*let m = lambda f,z,x.(if isNil x | (isNil !x & isNil #x) then print "i dont know" else print "sure") in (m list@billy@dummy)*)
+
+(*isNil x & isNil 2 | 2 * 3 >= 6 | isNil 1@2 *)
+
+isNil x | isNil 2*2 / 1 & 2 * 3 >= 6 & isNil 1@2 

@@ -68,9 +68,13 @@ TOKEN_IN
 
 %nonassoc EXPR
 
-%left  TOKEN_LT TOKEN_GT TOKEN_EQ TOKEN_NEQ TOKEN_LEQ TOKEN_GEQ
+%left  TOKEN_LT TOKEN_GT TOKEN_EQ TOKEN_NEQ TOKEN_LEQ TOKEN_GEQ 
+
+%left  TOKEN_AND TOKEN_OR
+
 %left  TOKEN_PLUS  TOKEN_MINUS
 %left  TOKEN_TIMES TOKEN_DIVIDE
+%right TOKEN_ISNIL
 %right  TOKEN_CONS
 %right TOKEN_HD TOKEN_TL
 
@@ -115,8 +119,10 @@ expression:
           | expression TOKEN_LEQ expression  {$$ = AstBinOp::make(LEQ,$1,$3);  }  
           | expression TOKEN_EQ expression   {$$ = AstBinOp::make(EQ,$1,$3);   }  
           | expression TOKEN_NEQ expression  {$$ = AstBinOp::make(NEQ,$1,$3);  }  
+          | expression TOKEN_AND expression  {$$ = AstBinOp::make(AND,$1,$3);  }  
+          | expression TOKEN_OR expression  {$$ = AstBinOp::make(OR,$1,$3);  }  
 
-          | TOKEN_ISNIL expression %prec EXPR { $$ = AstUnOp::make(ISNIL,$2); }       
+          | TOKEN_ISNIL expression { $$ = AstUnOp::make(ISNIL,$2); }       
             
           | expression TOKEN_PLUS expression {
             	            $$ = AstBinOp::make(PLUS, $1, $3); }
