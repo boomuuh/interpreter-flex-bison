@@ -10,8 +10,16 @@ int yyerror(const char* p)
   }
   return 1;
 };
-
- 
+bool _DEBUG_ = false;
+void debug(std::vector<Expression*> e) {
+  if (_DEBUG_)
+{    std::cout << "************ DEBUG ******** " << std::endl;
+     int count = 1;
+     for (std::vector<Expression*>::const_iterator it= e.begin(); it != e.end(); ++it) {
+          std::cout << count << ":  " << (*it)->to_string() << std::endl;
+          ++count;
+     }}
+}
 
 
 
@@ -112,11 +120,16 @@ expression:
                           Expression* e = $2;
                           assert (e->get_type() == AST_IDENTIFIER);
                           $$ = AstLet::make(static_cast<AstIdentifier*>(e),$4,$6);}
+
+          | TOKEN_LAMBDA id_list TOKEN_DOT expression %prec EXPR  {
+                      assert(($2)->get_type() == AST_IDENTIFIER_LIST);
+                      AstIdentifierList* ids = static_cast<AstIdentifierList*>($2);
+                      $$ = AstLambda::make(ids,$4);
+                    }
                      
-          | TOKEN_LPAREN expression_application TOKEN_RPAREN 
+          | TOKEN_LPAREN expression_application TOKEN_RPAREN { $$ = $2; }
             	           
-          | TOKEN_LPAREN expression TOKEN_RPAREN {
-                          $$ = $2; }
+          | TOKEN_LPAREN expression TOKEN_RPAREN { $$ = $2; }
           
           | TOKEN_IF expression TOKEN_THEN expression TOKEN_ELSE expression %prec EXPR {
                           $$ = AstBranch::make($2,$4,$6); }
@@ -130,16 +143,43 @@ expression:
                          if(lexeme != "") error += lexeme;
                          yyerror(error.c_str());
                          YYERROR; }
+
+id_list: 
+           expression {
+            debug({$1});
+                  Expression* e = $1;
+                  assert(e->get_type() ==AST_IDENTIFIER);
+                  AstIdentifier* i = static_cast<AstIdentifier*>(e);
+                  $$ = AstIdentifierList::make(i);
+                 }
+
+         | id_list TOKEN_COMMA expression {
+                  Expression* e =  $1;
+                  Expression* e1 = $3;
+                  debug({e,e1});
+                  assert(e->get_type() == AST_IDENTIFIER_LIST);
+                  assert(e1->get_type() == AST_IDENTIFIER);
+                  AstIdentifierList* id_list = static_cast<AstIdentifierList*>(e);
+                  id_list = id_list->append_id(static_cast<AstIdentifier*>(e1));
+                  $$ = id_list;
+         }
+   
+
+
           
-                        
+       
+      
+
+
+
 
 conditional:   
-          expression TOKEN_GT expression  {$$ = AstBinOp::make(GT,$1,$3);   }  |
-          expression TOKEN_LT expression  {$$ = AstBinOp::make(LT,$1,$3);   }  |
-          expression TOKEN_GEQ expression {$$ = AstBinOp::make(GEQ,$1,$3);  }  |
-          expression TOKEN_LEQ expression {$$ = AstBinOp::make(LEQ,$1,$3);  }  |
-          expression TOKEN_EQ expression  {$$ = AstBinOp::make(EQ,$1,$3);   }  |
-          expression TOKEN_NEQ expression  {$$ = AstBinOp::make(NEQ,$1,$3);   }         
+          expression TOKEN_GT expression   {$$ = AstBinOp::make(GT,$1,$3);   }  |
+          expression TOKEN_LT expression   {$$ = AstBinOp::make(LT,$1,$3);   }  |
+          expression TOKEN_GEQ expression  {$$ = AstBinOp::make(GEQ,$1,$3);  }  |
+          expression TOKEN_LEQ expression  {$$ = AstBinOp::make(LEQ,$1,$3);  }  |
+          expression TOKEN_EQ expression   {$$ = AstBinOp::make(EQ,$1,$3);   }  |
+          expression TOKEN_NEQ expression  {$$ = AstBinOp::make(NEQ,$1,$3);  }         
 
 
 
@@ -151,6 +191,7 @@ expression_application:
                         	$$ = l; }
 
             | expression_application expression {
+                          debug({$1,$2});
                         	Expression* _l = $1;
                         	assert(_l->get_type() == AST_EXPRESSION_LIST);
                         	AstExpressionList* l = static_cast<AstExpressionList*>(_l);

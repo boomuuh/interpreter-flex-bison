@@ -15,4 +15,6 @@
 
 (*let x = print "hello" in x*)
 
-let x = (if 2 * 4 <> 8 then print "this shouldn't run" else print "Winner winner" + "chicken" + "dinner") in x
+(*let x = (if 2 * 4 <> 8 then print "this shouldn't run" else print "Winner winner" + "chicken" + "dinner") in x*)
+
+let y = lambda x,z.print x * 2 in (y 5)
