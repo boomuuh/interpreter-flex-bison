@@ -10,10 +10,11 @@ int yyerror(const char* p)
   }
   return 1;
 };
+
 bool _DEBUG_ = false;
 void debug(std::vector<Expression*> e) {
-  if (_DEBUG_)
-{    std::cout << "************ DEBUG ******** " << std::endl;
+  if (_DEBUG_) {    
+    std::cout << "************ DEBUG ******** " << std::endl;
      int count = 1;
      for (std::vector<Expression*>::const_iterator it= e.begin(); it != e.end(); ++it) {
           std::cout << count << ":  " << (*it)->to_string() << std::endl;
@@ -102,6 +103,10 @@ expression:
           | TOKEN_IDENTIFIER {
                       	  string lexeme = GET_LEXEME($1);
                         	$$ =  AstIdentifier::make(lexeme); }
+          | TOKEN_READINT  { $$ = AstRead::make(true); }   
+
+          | TOKEN_READSTRING { $$ = AstRead::make(false); }   
+          
           | conditional 
             
           | expression TOKEN_PLUS expression {
@@ -114,7 +119,9 @@ expression:
                           $$ = AstBinOp::make(TIMES, $1, $3); }
 
           | expression TOKEN_DIVIDE expression {
-                          $$ = AstBinOp::make(DIVIDE, $1, $3); }    
+                          $$ = AstBinOp::make(DIVIDE, $1, $3); } 
+
+        
 
           | TOKEN_LET expression TOKEN_EQ expression TOKEN_IN expression %prec EXPR {
                           Expression* e = $2;
@@ -124,8 +131,7 @@ expression:
           | TOKEN_LAMBDA id_list TOKEN_DOT expression %prec EXPR  {
                       assert(($2)->get_type() == AST_IDENTIFIER_LIST);
                       AstIdentifierList* ids = static_cast<AstIdentifierList*>($2);
-                      $$ = AstLambda::make(ids,$4);
-                    }
+                      $$ = AstLambda::make(ids,$4); }
                      
           | TOKEN_LPAREN expression_application TOKEN_RPAREN { $$ = $2; }
             	           
@@ -146,7 +152,7 @@ expression:
 
 id_list: 
            expression {
-            debug({$1});
+                  debug({$1});
                   Expression* e = $1;
                   assert(e->get_type() ==AST_IDENTIFIER);
                   AstIdentifier* i = static_cast<AstIdentifier*>(e);

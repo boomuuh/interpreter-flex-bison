@@ -17,4 +17,4 @@
 
 (*let x = (if 2 * 4 <> 8 then print "this shouldn't run" else print "Winner winner" + "chicken" + "dinner") in x*)
 
-let y = lambda x,z.print x * 2 in (y 5)
+let y = lambda x.lambda z.(let t = ReadString in let _ = (print t) in 0) in (y 5)
