@@ -26,6 +26,11 @@
 
 (*let m = lambda f,z,x.(if isNil x | (isNil !x & isNil #x) then print "i dont know" else print "sure") in (m list@billy@dummy)*)
 
-let m = lambda x.(isNil x & isNil 2 | 2 * 3 >= 6 | isNil !x@9 & isNil #x@4) in (m 1@1@1)
+(*let m = isNil print lambda x.(isNil x & isNil 2 | 2 * 3 >= 6 | isNil !x@9 & isNil #x@4) in (m 1@1@1)*)
 
 (*isNil x | isNil 2*2 / 1 & 2 * 3 >= 6 & isNil 1@2 *)
+
+fun x with z,x,v = print "function" in (x 29)
+
+
+

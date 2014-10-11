@@ -73,7 +73,8 @@
      TOKEN_STRING = 291,
      TOKEN_ERROR = 292,
      TOKEN_IN = 293,
-     EXPR = 294
+     EXPR = 294,
+     VARIABLES = 295
    };
 #endif
 

@@ -11,13 +11,13 @@ int yyerror(const char* p)
   return 1;
 };
 
-bool _DEBUG_ = false;
+bool _DEBUG_ = true;
 void debug(std::vector<Expression*> e) {
   if (_DEBUG_) {    
     std::cout << "************ DEBUG ******** " << std::endl;
      int count = 1;
      for (std::vector<Expression*>::const_iterator it= e.begin(); it != e.end(); ++it) {
-          std::cout << count << ":  " << (*it)->to_string() << std::endl;
+          std::cout << count << ":  " << (*it)->to_value() << std::endl;
           ++count;
      }}
 }
@@ -74,7 +74,8 @@ TOKEN_IN
 
 %left  TOKEN_PLUS  TOKEN_MINUS
 %left  TOKEN_TIMES TOKEN_DIVIDE
-%right TOKEN_ISNIL
+%left VARIABLES
+%right TOKEN_ISNIL 
 %right  TOKEN_CONS
 %right TOKEN_HD TOKEN_TL
 
@@ -147,7 +148,18 @@ expression:
                           assert (e->get_type() == AST_IDENTIFIER);
                           $$ = AstLet::make(static_cast<AstIdentifier*>(e),$4,$6);}
 
-          | TOKEN_LAMBDA id_list TOKEN_DOT expression %prec EXPR  {
+          | TOKEN_FUN expression TOKEN_WITH id_list TOKEN_EQ expression TOKEN_IN expression %prec EXPR {
+                          Expression* e1 = $2;
+                          Expression* e2 = $4;
+                          assert (e1->get_type() == AST_IDENTIFIER);
+                          assert (e2->get_type() == AST_IDENTIFIER_LIST);
+                          AstIdentifierList* ids = static_cast<AstIdentifierList*>(e2);
+                          AstLambda* lam = AstLambda::make(ids,$6);
+                          $$ = AstLet::make(static_cast<AstIdentifier*>(e1),lam,$8);
+
+          }
+          
+          | TOKEN_LAMBDA id_list VARIABLES TOKEN_DOT expression %prec EXPR  {
                       assert(($2)->get_type() == AST_IDENTIFIER_LIST);
                       AstIdentifierList* ids = static_cast<AstIdentifierList*>($2);
                       $$ = AstLambda::make(ids,$4); }
@@ -171,17 +183,17 @@ expression:
 
 
 
-
 id_list: 
-           expression {
+           expression %prec VARIABLES {
                   debug({$1});
                   Expression* e = $1;
+
                   assert(e->get_type() ==AST_IDENTIFIER);
                   AstIdentifier* i = static_cast<AstIdentifier*>(e);
                   $$ = AstIdentifierList::make(i);
                  }
 
-         | id_list TOKEN_COMMA expression {
+         | id_list TOKEN_COMMA expression %prec VARIABLES {
                   Expression* e =  $1;
                   Expression* e1 = $3;
                   debug({e,e1});
