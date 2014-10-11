@@ -159,7 +159,7 @@ expression:
 
           }
           
-          | TOKEN_LAMBDA id_list VARIABLES TOKEN_DOT expression %prec EXPR  {
+          | TOKEN_LAMBDA id_list TOKEN_DOT expression %prec EXPR  {
                       assert(($2)->get_type() == AST_IDENTIFIER_LIST);
                       AstIdentifierList* ids = static_cast<AstIdentifierList*>($2);
                       $$ = AstLambda::make(ids,$4); }
