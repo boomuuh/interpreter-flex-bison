@@ -77,7 +77,7 @@ TOKEN_IN
 %left VARIABLES
 %nonassoc TOKEN_ISNIL 
 %right  TOKEN_CONS
-%right TOKEN_HD TOKEN_TL
+%nonassoc TOKEN_HD TOKEN_TL
 
 %%
 
