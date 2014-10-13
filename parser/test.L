@@ -20,17 +20,20 @@
 (*let y = lambda x.lambda z.(let t = ReadString in let _ = (print t) in 0) in (y 5)*)
 
 (*isNil x *)
-(let x = lambda l.(if isNil !l then print !l else print #l) in (x 1@2@3) )
+(*let x = lambda l.(if isNil !l then print !l else print #l) in (x 1@2@3) *)
 
 (*let x = lambda li.(print !li@1@Nil@2 * 4) in (x 2@2@4)*)
 
 (*let m = lambda f,z,x.(if isNil x | (isNil !x & isNil #x) then print "i dont know" else print "sure") in (m list@billy@dummy)*)
 
-(*let m = isNil print lambda x.(isNil x & isNil 2 | 2 * 3 >= 6 | isNil !x@9 & isNil #x@4) in (m 1@1@1)*)
+(let m = isNil print lambda x.(isNil x & isNil 2 | 2 * 3 >= 6 | isNil !x@9 & isNil #x@4) in (m 1@1@1))
 
 (*isNil x | isNil 2*2 / 1 & 2 * 3 >= 6 & isNil 1@2 *)
 
 (*fun x with z,x,v = print "function" in (x 29)*)
+
+
+
 
 
 

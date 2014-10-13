@@ -11,7 +11,7 @@ int yyerror(const char* p)
   return 1;
 };
 
-bool _DEBUG_ = true;
+bool _DEBUG_ = false;
 void debug(std::vector<Expression*> e) {
   if (_DEBUG_) {    
     std::cout << "************ DEBUG ******** " << std::endl;
@@ -75,7 +75,7 @@ TOKEN_IN
 %left  TOKEN_PLUS  TOKEN_MINUS
 %left  TOKEN_TIMES TOKEN_DIVIDE
 %left VARIABLES
-%right TOKEN_ISNIL 
+%nonassoc TOKEN_ISNIL 
 %right  TOKEN_CONS
 %right TOKEN_HD TOKEN_TL
 
