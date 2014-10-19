@@ -185,9 +185,7 @@ expression:
 
 id_list: 
            expression %prec VARIABLES {
-                  debug({$1});
                   Expression* e = $1;
-
                   assert(e->get_type() ==AST_IDENTIFIER);
                   AstIdentifier* i = static_cast<AstIdentifier*>(e);
                   $$ = AstIdentifierList::make(i);
@@ -196,7 +194,6 @@ id_list:
          | id_list TOKEN_COMMA expression %prec VARIABLES {
                   Expression* e =  $1;
                   Expression* e1 = $3;
-                  debug({e,e1});
                   assert(e->get_type() == AST_IDENTIFIER_LIST);
                   assert(e1->get_type() == AST_IDENTIFIER);
                   AstIdentifierList* id_list = static_cast<AstIdentifierList*>(e);
@@ -212,7 +209,6 @@ expression_application:
                         	$$ = l; }
 
             | expression_application expression {
-                          debug({$1,$2});
                         	Expression* _l = $1;
                         	assert(_l->get_type() == AST_EXPRESSION_LIST);
                         	AstExpressionList* l = static_cast<AstExpressionList*>(_l);

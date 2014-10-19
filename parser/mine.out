@@ -1,5 +1,5 @@
 ****************** AST ******************
-Let true
+Let function
 VAL
 	Lambda
 	Formal:
@@ -7,133 +7,52 @@ VAL
 	Body:
 		Lambda
 		Formal:
-			y
-		Body:
-			x
-BODY
-	Let false
-	VAL
-		Lambda
-		Formal:
-			x
+			w
 		Body:
 			Lambda
 			Formal:
-				y
+				z
 			Body:
-				y
-	BODY
-		Let read_list
-		VAL
-			Lambda
-			Formal:
-				n
-			Body:
-				BRANCH
-				Predicate:
-					EXP LIST
-						false
-						n
-						INT: 0
-				Then branch:
-					Nil
-				Else Branch:
-					Let val
-					VAL
-						readInt
-					BODY
-						Let rest
-						VAL
-							EXP LIST
-								read_list
-								BINOP: -
-									n
-									INT: 1
-						BODY
-							BINOP: @
-								val
-								rest
-		BODY
-			Let _
-			VAL
-				UNOP: print
-					STRING: "Enter number of integers in list"
-			BODY
-				Let num
-				VAL
-					readInt
-				BODY
-					Let _
-					VAL
+				Lambda
+				Formal:
+					jeremylin
+				Body:
+					UNOP: IsNil
 						UNOP: print
-							STRING: "Please enter the list values:"
-					BODY
-						Let l
-						VAL
-							EXP LIST
-								read_list
-								num
-						BODY
-							Let _
-							VAL
-								UNOP: print
-									STRING: "List entered"
-							BODY
-								Let _
-								VAL
-									UNOP: print
-										l
-								BODY
-									Let _
-									VAL
-										UNOP: print
-											STRING: "Adding 2 to each element: "
-									BODY
-										Let add
-										VAL
-											Lambda
-											Formal:
-												l
-											Body:
-												Lambda
-												Formal:
-													n
-												Body:
-													BRANCH
-													Predicate:
-														UNOP: IsNil
-															UNOP: #
-																l
-													Then branch:
-														BINOP: @
-															BINOP: +
-																UNOP: !
-																	l
-																n
-															Nil
-													Else Branch:
-														Let hd
-														VAL
-															UNOP: !
-																l
-														BODY
-															Let tl
-															VAL
-																UNOP: #
-																	l
-															BODY
-																BINOP: @
-																	BINOP: +
-																		hd
-																		n
-																	EXP LIST
-																		add
-																		tl
-																		n
-										BODY
-											EXP LIST
-												add
-												l
+							Lambda
+							Formal:
+								x
+							Body:
+								BINOP: >=
+									BINOP: |
+										BINOP: &
+											UNOP: IsNil
+												x
+											UNOP: IsNil
 												INT: 2
+										BINOP: *
+											INT: 2
+											INT: 3
+									BINOP: &
+										BINOP: |
+											INT: 6
+											UNOP: IsNil
+												BINOP: @
+													UNOP: !
+														x
+													INT: 9
+										UNOP: IsNil
+											BINOP: @
+												UNOP: #
+													x
+												INT: 4
+BODY
+	EXP LIST
+		function
+		BINOP: @
+			INT: 1
+			BINOP: @
+				INT: 1
+				INT: 1
 
 *****************************************
