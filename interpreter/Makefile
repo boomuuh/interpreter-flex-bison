@@ -31,3 +31,14 @@ clean:
 
 depend:
 	makedepend -I. *.c
+
+
+
+test: Evaluator.cpp 
+	make clean && make
+	clear
+	@echo "EXPECTED: "
+	@./l-interpreter test.L
+	@echo "ACTUAL: "
+	@/projects/cs345.tdillig/l-interpreter test.L
+

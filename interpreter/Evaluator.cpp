@@ -66,6 +66,12 @@ Expression* Evaluator::eval_unop(AstUnOp* b)
 	else if (b->get_unop_type() == ISNIL) {
 		return AstInt::make((eval_e->get_type() == AST_NIL ? 1 : 0));
 	} 
+	else if (b->get_unop_type() == HD) {
+		  return (eval_e->get_type() == AST_LIST ? static_cast<AstList*>(eval_e)->get_hd() : eval_e);
+	}
+	else if (b->get_unop_type() == TL) {
+		  return (eval_e->get_type() == AST_LIST ? static_cast<AstList*>(eval_e)->get_tl() : eval_e);
+	}
 	
 
       //add code to deal with all the other unops
