@@ -74,12 +74,9 @@ Expression* Evaluator::eval_unop(AstUnOp* b)
 		  	return static_cast<AstList*>(eval_e)->get_tl();
 		  else 
 		  	return AstNil::make();
+	} else {
+		assert(false);
 	}
-	
-
-      //add code to deal with all the other unops
-      assert(false);
-
 }
 
 
