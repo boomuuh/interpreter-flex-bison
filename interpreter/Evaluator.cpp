@@ -47,7 +47,10 @@ Expression* Evaluator::eval_binop(AstBinOp* b) {
 
 	assert(false);
 }
-// Expression* Expression::eval_expression_list(AstExpressionList* l);
+
+/*Expression* Expression::eval_expression_list(AstExpressionList* l) {
+
+}*/
 
 Expression* Evaluator::eval_unop(AstUnOp* b)
 {
@@ -118,8 +121,10 @@ Expression* Evaluator::eval(Expression* e)
 		break;
 	}
 	case AST_IDENTIFIER:
-	{
-		return static_cast<AstIdentifier*>(e);
+	{	
+		AstIdentifier* id = static_cast<AstIdentifier*>(e);
+		Expression* var = sym_tab.find(id);
+		return (var != NULL ? eval(var) : id);
 	}
 	case AST_INT:
 	{
