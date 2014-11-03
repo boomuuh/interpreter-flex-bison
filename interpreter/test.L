@@ -1,1 +1,1 @@
-isNil 0
+2@Nil@"hello"@"world"

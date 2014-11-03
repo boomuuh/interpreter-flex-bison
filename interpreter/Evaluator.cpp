@@ -37,7 +37,16 @@ Evaluator::Evaluator()
 
 }
 
-// Expression* eval_binop(AstBinOp* b) {}
+Expression* Evaluator::eval_binop(AstBinOp* b) {
+	
+	if (b->get_binop_type() == CONS) {
+		Expression* head = eval(b->get_first());
+		Expression* tail = eval(b->get_second());
+		return AstList::make(head,tail);
+	}
+
+	assert(false);
+}
 // Expression* eval_expression_list(AstExpressionList* l);
 
 Expression* Evaluator::eval_unop(AstUnOp* b)
@@ -81,6 +90,12 @@ Expression* Evaluator::eval(Expression* e)
 	{
 		AstUnOp* b = static_cast<AstUnOp*>(e);
 		res_exp = eval_unop(b);
+		break;
+	}
+	case AST_BINOP:
+	{
+		AstBinOp* b = static_cast<AstBinOp*>(e);
+		res_exp = eval_binop(b);
 		break;
 	}
 	case AST_READ:
