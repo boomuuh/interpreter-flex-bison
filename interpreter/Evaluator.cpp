@@ -124,7 +124,10 @@ Expression* Evaluator::eval(Expression* e)
 	{	
 		AstIdentifier* id = static_cast<AstIdentifier*>(e);
 		Expression* var = sym_tab.find(id);
-		return (var != NULL ? eval(var) : id);
+		if (var != NULL)
+			return eval(var);
+		else
+			report_error(id,"Identifier " + id->to_value() + " is not bound in current context");
 	}
 	case AST_INT:
 	{
