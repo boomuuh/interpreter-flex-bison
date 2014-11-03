@@ -1,1 +1,1 @@
-#(2@Nil@"hello"@"world")
+#("Hello"@1)

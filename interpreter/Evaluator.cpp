@@ -70,7 +70,10 @@ Expression* Evaluator::eval_unop(AstUnOp* b)
 		  return (eval_e->get_type() == AST_LIST ? static_cast<AstList*>(eval_e)->get_hd() : eval_e);
 	}
 	else if (b->get_unop_type() == TL) {
-		  return (eval_e->get_type() == AST_LIST ? static_cast<AstList*>(eval_e)->get_tl() : eval_e);
+		  if (eval_e->get_type() == AST_LIST) 
+		  	return static_cast<AstList*>(eval_e)->get_tl();
+		  else 
+		  	return AstNil::make();
 	}
 	
 
