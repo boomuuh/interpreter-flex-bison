@@ -1,1 +1,1 @@
-#("Hello"@1)
+if isNil Nil then print "first" else print "second"

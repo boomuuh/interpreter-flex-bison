@@ -47,7 +47,7 @@ Expression* Evaluator::eval_binop(AstBinOp* b) {
 
 	assert(false);
 }
-// Expression* eval_expression_list(AstExpressionList* l);
+// Expression* Expression::eval_expression_list(AstExpressionList* l);
 
 Expression* Evaluator::eval_unop(AstUnOp* b)
 {
@@ -129,6 +129,15 @@ Expression* Evaluator::eval(Expression* e)
 	case AST_NIL:
 	{	
 		return static_cast<AstNil*>(e);
+	}
+	case AST_BRANCH:
+	{
+		AstBranch* branch = static_cast<AstBranch*>(e);
+		Expression* pred = eval(branch->get_pred());
+		assert (pred->get_type() == AST_INT);
+		//return eval((static_cast<AstInt*>(pred)->get_int() > 0 ? branch->get_then_exp() : branch->get_else_exp())); 
+		res_exp = eval((static_cast<AstInt*>(pred)->get_int() > 0 ? branch->get_then_exp() : branch->get_else_exp()));
+		break;
 	}
 	default:
 		assert(false);
