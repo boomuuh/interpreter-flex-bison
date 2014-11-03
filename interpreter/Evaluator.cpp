@@ -117,6 +117,10 @@ Expression* Evaluator::eval(Expression* e)
 
 		break;
 	}
+	case AST_IDENTIFIER:
+	{
+		return static_cast<AstIdentifier*>(e);
+	}
 	case AST_INT:
 	{
 		res_exp = e;
@@ -134,9 +138,14 @@ Expression* Evaluator::eval(Expression* e)
 	{
 		AstBranch* branch = static_cast<AstBranch*>(e);
 		Expression* pred = eval(branch->get_pred());
-		assert (pred->get_type() == AST_INT);
-		//return eval((static_cast<AstInt*>(pred)->get_int() > 0 ? branch->get_then_exp() : branch->get_else_exp())); 
 		res_exp = eval((static_cast<AstInt*>(pred)->get_int() > 0 ? branch->get_then_exp() : branch->get_else_exp()));
+		break;
+	}
+	case AST_LET: 
+	{
+		AstLet* let = static_cast<AstLet*>(e);
+		sym_tab.add(let->get_id(),eval(let->get_val()));
+		res_exp = eval(let->get_body());
 		break;
 	}
 	default:
