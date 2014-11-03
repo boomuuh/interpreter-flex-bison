@@ -37,12 +37,11 @@ Evaluator::Evaluator()
 
 }
 
+// Expression* eval_binop(AstBinOp* b) {}
+// Expression* eval_expression_list(AstExpressionList* l);
+
 Expression* Evaluator::eval_unop(AstUnOp* b)
 {
-
-
-
-
 
 	Expression* e = b->get_expression();
 	Expression* eval_e = eval(e);
@@ -54,7 +53,8 @@ Expression* Evaluator::eval_unop(AstUnOp* b)
 		}
 		else cout << eval_e->to_value() << endl;
 		return AstInt::make(0);
-	}
+	} 
+	
 
       //add code to deal with all the other unops
       assert(false);
@@ -101,6 +101,10 @@ Expression* Evaluator::eval(Expression* e)
 	case AST_STRING:
 	{
 		return static_cast<AstString*>(e);
+	}
+	case AST_NIL:
+	{	
+		return static_cast<AstNil*>(e);
 	}
 	default:
 		assert(false);
