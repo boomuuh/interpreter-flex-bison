@@ -1,1 +1,1 @@
-Nil
+isNil 0

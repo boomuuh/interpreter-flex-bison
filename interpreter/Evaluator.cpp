@@ -54,6 +54,9 @@ Expression* Evaluator::eval_unop(AstUnOp* b)
 		else cout << eval_e->to_value() << endl;
 		return AstInt::make(0);
 	} 
+	else if (b->get_unop_type() == ISNIL) {
+		return AstInt::make((eval_e->get_type() == AST_NIL ? 1 : 0));
+	} 
 	
 
       //add code to deal with all the other unops
