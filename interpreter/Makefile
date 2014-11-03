@@ -5,6 +5,7 @@ INC_PARAMS=$(foreach d, $(INC), -I$d)
 
 OBJs =   parser.tab.o lex.yy.o  Expression.o SymbolTable.o frontend.o Evaluator.o AstRead.o AstNil.o AstList.o AstUnOp.o AstBranch.o AstExpressionList.o AstIdentifierList.o AstBinOp.o  AstIdentifier.o AstInt.o AstLambda.o AstLet.o AstString.o 
 
+
 default: parser
 
 parser: ${OBJs}
@@ -32,13 +33,16 @@ clean:
 depend:
 	makedepend -I. *.c
 
+eval: l-interpreter
+	@echo "EXPECTED: "
+	@./l-interpreter test.L
+	@echo "ACTUAL: "
+	@/projects/cs345.tdillig/l-interpreter test.L
 
 
 test: Evaluator.cpp 
 	make clean && make
 	clear
-	@echo "EXPECTED: "
-	@./l-interpreter test.L
-	@echo "ACTUAL: "
-	@/projects/cs345.tdillig/l-interpreter test.L
+	@make eval --no-print-directory
+	
 
