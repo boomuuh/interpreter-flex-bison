@@ -98,7 +98,10 @@ Expression* Evaluator::eval(Expression* e)
 		res_exp = e;
 		break;
 	}
-	//ADD CASES FOR ALL EXPRESSIONS!!
+	case AST_STRING:
+	{
+		return static_cast<AstString*>(e);
+	}
 	default:
 		assert(false);
 
