@@ -5,7 +5,11 @@
 
 
 
-
+bool DEBUG = false;
+void printer(Expression* e) {
+		cout << "******  DEBUG   ******* \n " << e->to_value() << endl;
+	cout << endl;
+}
 
 /*
  * This skeleton currently only contains code to handle integer constants, print and read. 
@@ -14,14 +18,13 @@
 
 
 
-
-
 /*
  * Call this function to report any run-time errors
  * This will abort execution.
  */
 void report_error(Expression* e, const string & s)
-{
+{	
+
 	cout << "Run-time error in expression " << e->to_value() << endl;
 	cout << s << endl;
 	exit(1);
@@ -48,8 +51,21 @@ Expression* Evaluator::eval_binop(AstBinOp* b) {
 	assert(false);
 }
 
-/*Expression* Expression::eval_expression_list(AstExpressionList* l) {
+/*Expression* Evaluator::eval_expression_list(AstExpressionList* l) {
+	vector<Expression*> exps = l->get_expression();
+	// (e1 e2)
+	// must evaluate e1 to a lambda expression
+	sym_tab.push();
+	Expression* e1 = eval(exps.at(0));
+	assert(e1->get_type() == AST_LAMBDA);
+	
+	Expression* e2 = exps.at(1);
+	
 
+	sym_tab.pop();
+
+
+	return
 }*/
 
 Expression* Evaluator::eval_unop(AstUnOp* b)
@@ -107,6 +123,12 @@ Expression* Evaluator::eval(Expression* e)
 		res_exp = eval_binop(b);
 		break;
 	}
+/*	case AST_EXPRESSION_LIST:
+	{
+		AstExpressionList* elist = static_cast<AstExpressionList*>(e);
+		res_exp = eval_expression_list(elist);
+		break;
+	}*/
 	case AST_READ:
 	{
 		AstRead* r = static_cast<AstRead*>(e);
@@ -124,8 +146,12 @@ Expression* Evaluator::eval(Expression* e)
 	{	
 		AstIdentifier* id = static_cast<AstIdentifier*>(e);
 		Expression* var = sym_tab.find(id);
+		if(DEBUG){
+				printer(id);
+				printer(var);
+				sym_tab.print_contents();}
 		if (var != NULL)
-			return eval(var);
+			return var; //eval(var);
 		else
 			report_error(id,"Identifier " + id->to_value() + " is not bound in current context");
 	}
@@ -152,10 +178,27 @@ Expression* Evaluator::eval(Expression* e)
 	case AST_LET: 
 	{
 		AstLet* let = static_cast<AstLet*>(e);
-		sym_tab.add(let->get_id(),eval(let->get_val()));
-		res_exp = eval(let->get_body());
-		break;
+		sym_tab.push();
+		Expression* v2 = eval(let->get_val());
+		//v2 = (let->get_val())->substitute(let->get_val(),v2);
+		sym_tab.pop();
+		sym_tab.add(static_cast<AstIdentifier*>(let->get_id()),v2);
+		Expression* b2 = eval(let->get_body());
+		
+	
+		return b2;
+	
+	
 	}
+	/*case AST_LAMBDA:
+	{
+		AstLambda* lam = static_cast<AstLambda*>(e);
+		sym_tab.
+		sym_tab.add(lam->get_formal(),eval(lam->get_body()));
+		return lam;
+
+
+	}*/
 	default:
 		assert(false);
 
