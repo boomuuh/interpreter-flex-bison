@@ -48,36 +48,37 @@ Expression* Evaluator::eval_binop(AstBinOp* b) {
 	if (bt == CONS) {
 		return AstList::make(e1,e2);
 	} else {
-		bool same_type = (e1->get_type() == e2->get_type());
-		
-		if (same_type) {
-				Expression* res = NULL;
-				if (e1->get_type() == AST_INT) {
+
+		if (e1->get_type() == AST_LIST || e2->get_type() == AST_LIST) {
+			report_error(b,"Binpo @ is the only legal binop for lists");
+		}
+
+		if (e1->get_type() == AST_INT && e2->get_type() == AST_INT) {
 					AstInt* n1 = static_cast<AstInt*>(e1);
 					AstInt* n2 = static_cast<AstInt*>(e2);
-
-					switch (bt) {
-						case PLUS: res =  AstInt::make((n1->get_int()) + (n2->get_int())); break;
-						case MINUS: res =  AstInt::make((n1->get_int()) - (n2->get_int())); break;
-						case TIMES: res =  AstInt::make((n1->get_int()) * (n2->get_int())); break;
-						case DIVIDE: res =  AstInt::make((n1->get_int()) / (n2->get_int())); break;
-						case AND: res =  AstInt::make((n1->get_int()) & (n2->get_int())); break;
-						case OR: res =  AstInt::make((n1->get_int()) | (n2->get_int())); break;
-						case EQ  : res =  AstInt::make(((n1->get_int()) == (n2->get_int()) ? 1 : 0)); break;
-						case NEQ : res =  AstInt::make(((n1->get_int()) != (n2->get_int()) ? 1 : 0)); break;
-						case LT : res =  AstInt::make(((n1->get_int()) < (n2->get_int()) ? 1 : 0)); break;
-						case LEQ : res =  AstInt::make(((n1->get_int()) <= (n2->get_int()) ? 1 : 0)); break;
-						case GT : res =  AstInt::make(((n1->get_int()) > (n2->get_int()) ? 1 : 0)); break;
-						case GEQ : res =  AstInt::make(((n1->get_int()) >= (n2->get_int()) ? 1 : 0)); break;
-						default: report_error(b,"Binop " + AstBinOp::binop_type_to_string(bt) + " cannot be applied to integers");
-					}
-
+					Expression* res = NULL;
+							switch (bt) {
+								case PLUS: res =  AstInt::make((n1->get_int()) + (n2->get_int())); break;
+								case MINUS: res =  AstInt::make((n1->get_int()) - (n2->get_int())); break;
+								case TIMES: res =  AstInt::make((n1->get_int()) * (n2->get_int())); break;
+								case DIVIDE: res =  AstInt::make((n1->get_int()) / (n2->get_int())); break;
+								case AND: res =  AstInt::make((n1->get_int()) & (n2->get_int())); break;
+								case OR: res =  AstInt::make((n1->get_int()) | (n2->get_int())); break;
+								case EQ  : res =  AstInt::make(((n1->get_int()) == (n2->get_int()) ? 1 : 0)); break;
+								case NEQ : res =  AstInt::make(((n1->get_int()) != (n2->get_int()) ? 1 : 0)); break;
+								case LT : res =  AstInt::make(((n1->get_int()) < (n2->get_int()) ? 1 : 0)); break;
+								case LEQ : res =  AstInt::make(((n1->get_int()) <= (n2->get_int()) ? 1 : 0)); break;
+								case GT : res =  AstInt::make(((n1->get_int()) > (n2->get_int()) ? 1 : 0)); break;
+								case GEQ : res =  AstInt::make(((n1->get_int()) >= (n2->get_int()) ? 1 : 0)); break;
+								default: report_error(b,"This shouldn't really happen...");
+							}
+					return res;
 				}
 
-				if (e1->get_type() == AST_STRING) {
+		if (e1->get_type() == AST_STRING && e2->get_type() == AST_STRING) {
 					AstString* n1 = static_cast<AstString*>(e1);
 					AstString* n2 = static_cast<AstString*>(e2);
-
+					Expression* res = NULL;
 					switch (bt) {
 						case PLUS: res =  AstString::make((n1->get_string()) + (n2->get_string())); break;
 						case EQ  : res =  AstInt::make(((n1->get_string()) == (n2->get_string()) ? 1 : 0)); break;
@@ -85,11 +86,9 @@ Expression* Evaluator::eval_binop(AstBinOp* b) {
 						default: report_error(b,"Binop " + AstBinOp::binop_type_to_string(bt) + " cannot be applied to strings");
 					}
 
-				}
-
-
-				return res;
-		}
+					return res;
+	 		
+			}
 
 		report_error(b,"Binop can only be applied to expressions of same type");
 	} 
@@ -238,7 +237,7 @@ Expression* Evaluator::eval(Expression* e)
 	/*case AST_LAMBDA:
 	{
 		AstLambda* lam = static_cast<AstLambda*>(e);
-		sym_tab.
+
 		sym_tab.add(lam->get_formal(),eval(lam->get_body()));
 		return lam;
 
