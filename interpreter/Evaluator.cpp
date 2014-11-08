@@ -95,22 +95,34 @@ Expression* Evaluator::eval_binop(AstBinOp* b) {
 
 }
 
-/*Expression* Evaluator::eval_expression_list(AstExpressionList* l) {
-	vector<Expression*> exps = l->get_expression();
+Expression* Evaluator::eval_expression_list(AstExpressionList* l) {
+	const vector<Expression*>& exps = l->get_expressions();
 	// (e1 e2)
 	// must evaluate e1 to a lambda expression
-	sym_tab.push();
-	Expression* e1 = eval(exps.at(0));
-	assert(e1->get_type() == AST_LAMBDA);
-	
-	Expression* e2 = exps.at(1);
-	
+	Expression* e1 = eval(exps.front());
+	if (e1->get_type() !=  AST_LAMBDA) {
+		report_error(l,"Only lambda expressions can be applied to other expressions");
+	}
+	AstLambda* lam = static_cast<AstLambda*>(e1);
+	// beta reduction of the lambda body
+	if (exps.size() > 1) {
+		Expression* beta = eval((lam->get_body())->substitute(lam->get_formal(), exps.at(1)));
+		if (exps.size() == 2) {
+			return beta;
+		}else {
+			vector<Expression*> newlist (exps.begin() + 2,exps.end());
+		newlist.insert(newlist.begin(),beta);
+		return AstExpressionList::make(newlist);
+		}
+		
+		
+		
+	} 
+		
 
-	sym_tab.pop();
+	return lam;
 
-
-	return
-}*/
+}
 
 Expression* Evaluator::eval_unop(AstUnOp* b)
 {
@@ -167,12 +179,12 @@ Expression* Evaluator::eval(Expression* e)
 		res_exp = eval_binop(b);
 		break;
 	}
-/*	case AST_EXPRESSION_LIST:
+	case AST_EXPRESSION_LIST:
 	{
 		AstExpressionList* elist = static_cast<AstExpressionList*>(e);
 		res_exp = eval_expression_list(elist);
 		break;
-	}*/
+	}
 	case AST_READ:
 	{
 		AstRead* r = static_cast<AstRead*>(e);
@@ -234,15 +246,13 @@ Expression* Evaluator::eval(Expression* e)
 	
 	
 	}
-	/*case AST_LAMBDA:
+	case AST_LAMBDA:
 	{
-		AstLambda* lam = static_cast<AstLambda*>(e);
+		
+	
+		return static_cast<AstLambda*>(e);
 
-		sym_tab.add(lam->get_formal(),eval(lam->get_body()));
-		return lam;
-
-
-	}*/
+	}
 	default:
 		assert(false);
 

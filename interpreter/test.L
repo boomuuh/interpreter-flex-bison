@@ -9,4 +9,4 @@ let y = x in x
 let x = if isNil 0 then print x else print (x + 1) in (x 2)*)
 
 
-1 + (1@2@3)
+let x = lambda x,y.(x + 1) in (x 2)
