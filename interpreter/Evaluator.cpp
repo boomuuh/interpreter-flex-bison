@@ -40,15 +40,60 @@ Evaluator::Evaluator()
 
 }
 
-Expression* Evaluator::eval_binop(AstBinOp* b) {
-	
-	if (b->get_binop_type() == CONS) {
-		Expression* head = eval(b->get_first());
-		Expression* tail = eval(b->get_second());
-		return AstList::make(head,tail);
-	}
 
-	assert(false);
+Expression* Evaluator::eval_binop(AstBinOp* b) {
+	binop_type bt = b->get_binop_type();
+	Expression* e1 = eval(b->get_first());
+	Expression* e2 = eval(b->get_second());
+	if (bt == CONS) {
+		return AstList::make(e1,e2);
+	} else {
+		bool same_type = (e1->get_type() == e2->get_type());
+		
+		if (same_type) {
+				Expression* res = NULL;
+				if (e1->get_type() == AST_INT) {
+					AstInt* n1 = static_cast<AstInt*>(e1);
+					AstInt* n2 = static_cast<AstInt*>(e2);
+
+					switch (bt) {
+						case PLUS: res =  AstInt::make((n1->get_int()) + (n2->get_int())); break;
+						case MINUS: res =  AstInt::make((n1->get_int()) - (n2->get_int())); break;
+						case TIMES: res =  AstInt::make((n1->get_int()) * (n2->get_int())); break;
+						case DIVIDE: res =  AstInt::make((n1->get_int()) / (n2->get_int())); break;
+						case AND: res =  AstInt::make((n1->get_int()) & (n2->get_int())); break;
+						case OR: res =  AstInt::make((n1->get_int()) | (n2->get_int())); break;
+						case EQ  : res =  AstInt::make(((n1->get_int()) == (n2->get_int()) ? 1 : 0)); break;
+						case NEQ : res =  AstInt::make(((n1->get_int()) != (n2->get_int()) ? 1 : 0)); break;
+						case LT : res =  AstInt::make(((n1->get_int()) < (n2->get_int()) ? 1 : 0)); break;
+						case LEQ : res =  AstInt::make(((n1->get_int()) <= (n2->get_int()) ? 1 : 0)); break;
+						case GT : res =  AstInt::make(((n1->get_int()) > (n2->get_int()) ? 1 : 0)); break;
+						case GEQ : res =  AstInt::make(((n1->get_int()) >= (n2->get_int()) ? 1 : 0)); break;
+						default: report_error(b,"Binop " + AstBinOp::binop_type_to_string(bt) + " cannot be applied to integers");
+					}
+
+				}
+
+				if (e1->get_type() == AST_STRING) {
+					AstString* n1 = static_cast<AstString*>(e1);
+					AstString* n2 = static_cast<AstString*>(e2);
+
+					switch (bt) {
+						case PLUS: res =  AstString::make((n1->get_string()) + (n2->get_string())); break;
+						case EQ  : res =  AstInt::make(((n1->get_string()) == (n2->get_string()) ? 1 : 0)); break;
+						case NEQ : res =  AstInt::make(((n1->get_string()) != (n2->get_string()) ? 1 : 0)); break;
+						default: report_error(b,"Binop " + AstBinOp::binop_type_to_string(bt) + " cannot be applied to strings");
+					}
+
+				}
+
+
+				return res;
+		}
+
+		report_error(b,"Binop can only be applied to expressions of same type");
+	} 
+
 }
 
 /*Expression* Evaluator::eval_expression_list(AstExpressionList* l) {
