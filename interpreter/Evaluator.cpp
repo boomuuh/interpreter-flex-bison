@@ -5,11 +5,6 @@
 
 
 
-bool DEBUG = false;
-void printer(Expression* e) {
-		cout << "******  DEBUG   ******* \n " << e->to_value() << endl;
-	cout << endl;
-}
 
 /*
  * This skeleton currently only contains code to handle integer constants, print and read. 
@@ -111,8 +106,8 @@ Expression* Evaluator::eval_expression_list(AstExpressionList* l) {
 			return beta;
 		}else {
 			vector<Expression*> newlist (exps.begin() + 2,exps.end());
-		newlist.insert(newlist.begin(),beta);
-		return AstExpressionList::make(newlist);
+			newlist.insert(newlist.begin(),beta);
+		return eval_expression_list(AstExpressionList::make(newlist));
 		}
 		
 		
@@ -202,12 +197,8 @@ Expression* Evaluator::eval(Expression* e)
 	{	
 		AstIdentifier* id = static_cast<AstIdentifier*>(e);
 		Expression* var = sym_tab.find(id);
-		if(DEBUG){
-				printer(id);
-				printer(var);
-				sym_tab.print_contents();}
 		if (var != NULL)
-			return var; //eval(var);
+			return var; 
 		else
 			report_error(id,"Identifier " + id->to_value() + " is not bound in current context");
 	}
@@ -236,22 +227,17 @@ Expression* Evaluator::eval(Expression* e)
 		AstLet* let = static_cast<AstLet*>(e);
 		sym_tab.push();
 		Expression* v2 = eval(let->get_val());
-		//v2 = (let->get_val())->substitute(let->get_val(),v2);
 		sym_tab.pop();
 		sym_tab.add(static_cast<AstIdentifier*>(let->get_id()),v2);
 		Expression* b2 = eval(let->get_body());
 		
-	
 		return b2;
 	
 	
 	}
 	case AST_LAMBDA:
 	{
-		
-	
 		return static_cast<AstLambda*>(e);
-
 	}
 	default:
 		assert(false);
